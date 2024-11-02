@@ -236,12 +236,9 @@ defmodule SecondLab do
       end
     end
 
-    # Функция remove возвращает дерево AVLDict (а точнее корневой узел дерева Node) после удаления элемента
-    # Удаление узлов из AVL-дерева - если дерево пустое, то ключ не найден, возвращается атом :not_found
+
     def remove(_key, @null_node), do: :not_found
 
-    # Удаление узлов из AVL-дерева - если узел с указанным ключом найден и не имеет ни левого, ни правого поддеревьев,
-    # то узел просто удаляется, и возвращается @null_node
     def remove(key, %Node{
           key: key,
           value: _value,
@@ -388,7 +385,7 @@ defmodule SecondLab do
       map(left, func) ++ [func.({key, value})] ++ map(right, func)
     end
 
-    # Отображение (map) функции func к каждому узлу дерева с возвращением нового дерева с измененными значениями.
+# Mapping (map) of the func function to each node of the tree with the return of a new tree with changed values.
     def map_tree(node, func) do
       from_list(map(node, func))
     end

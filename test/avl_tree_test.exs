@@ -21,7 +21,7 @@ defmodule Lab2Test do
 
   def remove_all(l, t) do
     {empty_t, _} =
-      :lists.foldl(
+      List.foldl(
         fn {k, _v}, {t_acc, l_acc} ->
           newt = AVLDict.wrap_remove(k, t_acc)
           [_ | newl] = l_acc
