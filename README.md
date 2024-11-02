@@ -5,8 +5,33 @@
 - Группа:`P3313`
 - Вариант `avl-dict`
 
+## Участвующие структуры: 
 
-# Property based testing 
+```elixir
+defmodule SecondLab do
+  defmodule Node do
+    @moduledoc """
+    The node of AVL tree. The structure consists of a key, a value, the height of the tree, pointers to the left and right subtrees
+    """
+    defstruct [:key, :value, :height, :left, :right]
+  end
+
+  defmodule AVLDict do
+    @moduledoc """
+    The interface is a dictionary that uses the data structure - AVL-tree
+    """
+    @null_node %Node{key: nil, value: nil, left: nil, right: nil, height: 0}
+
+    def height(@null_node), do: 0
+
+    def height(%Node{left: left, right: right}) do
+      max(height(left), height(right)) + 1
+    end
+    ...
+```
+
+
+## Property based testing 
 ```elixir
   # Functions for property-based testing:
   def neutral_elem(t_size) do
@@ -69,3 +94,17 @@
     end)
   end
 ```
+
+## Результаты тестов
+
+```bash
+jaba in ~/Documents/life/ITMO/FP/secondLab/SecondLab on main λ mix test
+Running ExUnit with seed: 576585, max_cases: 20
+
+...................
+Finished in 26.9 seconds (0.00s async, 26.9s sync)
+19 tests, 0 failures
+```
+
+# Вывод
+Я познакомился с тестированием в рамках функционального языка Elixir, настроил Linter и узнал, кто это такой ваш property based testing
