@@ -5,7 +5,6 @@ defmodule Lab2Test do
 
   @null_node %Node{key: nil, value: nil, left: nil, right: nil, height: 0}
 
-
   def balance_check(%Node{key: nil, value: nil, height: height, left: nil, right: nil}),
     do: height == 0
 
@@ -93,7 +92,7 @@ defmodule Lab2Test do
     assert AVLDict.equal_tree(AVLDict.from_list(l), expected_node) == true
   end
 
-# Testing node balancing functions, getting a tree from a list by left convolution, and
+  # Testing node balancing functions, getting a tree from a list by left convolution, and
   # comparing trees at 50000 nodes
   test "Insert Fifty Thousands Nodes" do
     l = Enum.map(1..50_000, fn x -> {x, "#{x}"} end)
@@ -122,13 +121,13 @@ defmodule Lab2Test do
              AVLDict.to_list(AVLDict.wrap_remove(3, AVLDict.wrap_remove(1, t))) == [{2, "2"}]
   end
 
-# Testing the functions of removing a non-existent node from the tree on 4 nodes
+  # Testing the functions of removing a non-existent node from the tree on 4 nodes
   test "Not Found Remove" do
     t = AVLDict.from_list([{1, "1"}, {2, "2"}, {3, "3"}, {4, "4"}])
     assert AVLDict.wrap_remove(5, t) == t
   end
 
-# Testing the functions of removing all nodes from the tree on 5 nodes
+  # Testing the functions of removing all nodes from the tree on 5 nodes
   test "Remove All" do
     l = [{1, "1"}, {2, "2"}, {3, "3"}, {4, "4"}, {5, "5"}]
     t = AVLDict.from_list(l)
@@ -151,8 +150,7 @@ defmodule Lab2Test do
     assert node == expected_l
   end
 
-
-# Testing a filtering function that leaves only nodes with keys greater than 1
+  # Testing a filtering function that leaves only nodes with keys greater than 1
   test "Filter More Than One" do
     l = [{1, 1}, {2, 2}, {3, 3}]
     expected_l = [{2, 2}, {3, 3}]
@@ -164,7 +162,7 @@ defmodule Lab2Test do
     assert node == expected_l
   end
 
-# Testing the find function to find the value of an element with the desired key
+  # Testing the find function to find the value of an element with the desired key
   test "Find Node Value With Key" do
     l = [{1, 234}, {5, 1233}, {22, 1232}]
     node = AVLDict.from_list(l)
@@ -196,9 +194,8 @@ defmodule Lab2Test do
     assert node_summator == 105
   end
 
-
-# Property-based testing
-# Functions for property-based testing:
+  # Property-based testing
+  # Functions for property-based testing:
   def neutral_elem(t_size) do
     t = AVLDict.from_list(Enum.map(1..t_size, fn _ -> {:rand.uniform(50), 0} end))
     r = AVLDict.merge(t, @null_node)
@@ -233,7 +230,7 @@ defmodule Lab2Test do
     Enum.map(1..5_000, fn _ -> neutral_elem(:rand.uniform(1000) - 1) end)
   end
 
-# Associativity of the multiplication operation - merging of trees
+  # Associativity of the multiplication operation - merging of trees
 
   # Testing the associativity property of the tree merging (addition) operation in a monoid by running
   # associativity functions 5000 times. Testing on AVL trees with a small number of nodes (<10)
@@ -243,7 +240,7 @@ defmodule Lab2Test do
     end)
   end
 
-# Testing the associativity property of the tree merging (addition) operation in a monoid by running
+  # Testing the associativity property of the tree merging (addition) operation in a monoid by running
   # associativity functions 5000 times. Testing on AVL trees with an average number of nodes (<100)
   test "Medium Monoid Test" do
     Enum.map(1..5_000, fn _ ->
@@ -251,7 +248,7 @@ defmodule Lab2Test do
     end)
   end
 
-# Testing the associativity property of the tree merging (addition) operation in a monoid by running
+  # Testing the associativity property of the tree merging (addition) operation in a monoid by running
   # associativity functions 5_000 times. Testing on AVL trees with a large number of nodes (<1000)
   test "Big Monoid Test" do
     Enum.map(1..5_000, fn _ ->

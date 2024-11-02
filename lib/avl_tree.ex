@@ -261,8 +261,10 @@ defmodule SecondLab do
     def remove(key, %Node{key: key, value: _value, height: _, left: @null_node, right: right}),
       do: right
 
-    # Removing nodes from the AVL tree - if a node with the specified key is found and has both subtrees, then it is used
-    # the node with the minimum key from the right subtree (obtained via find_min)
+    @doc """
+      Removing nodes from the AVL tree - if a node with the specified key is found and has both subtrees, then it is used
+    the node with the minimum key from the right subtree (obtained via find_min)
+    """
     def remove(key, %Node{
           key: key,
           value: _value,
@@ -366,19 +368,22 @@ defmodule SecondLab do
       to_list(left) ++ [{key, value}] ++ to_list(right)
     end
 
-    # Creating an AVL tree from a list of {key, value} pairs - the foldl function is used to traverse the list and insert each
-    # of an element in the tree using the insert function. The initial value for the accumulator is an empty node
+    @doc """
+    Creating an AVL tree from a list of {key, value} pairs - the foldl function is used to traverse the list and insert each
+    of an element in the tree using the insert function. The initial value for the accumulator is an empty node
+    """
     def from_list(list) do
       :lists.foldl(fn {key, value}, acc -> insert(acc, key, value) end, @null_node, list)
     end
 
-    # Applying (map) the specified func function to each node of the tree - if the input node is empty (the tree is empty),
+    # Applying (map) the specified func function to each node of the tree
+    #  - if the input node is empty (the tree is empty),
     # then an empty list is returned
     def map(nil, _), do: []
 
     # Applying (map) the specified func function to each node of the tree - if the tree is not empty,
     # then map recursively traverses the left subtree, applies the func function to the current node, and then traverses the right one
-    # # under the tree. As a result, a list of the results of applying the function to all nodes is returned.
+    # under the tree. As a result, a list of the results of applying the function to all nodes is returned.
     def map(%Node{key: key, value: value, left: left, right: right}, func) do
       map(left, func) ++ [func.({key, value})] ++ map(right, func)
     end
@@ -388,22 +393,36 @@ defmodule SecondLab do
       from_list(map(node, func))
     end
 
-    # Left convolution of the tree - if the input node is empty (the tree is empty), then the accumulator is returned unchanged.
+    # Left convolution of the tree -
+    # if the input node is empty (the tree is empty),
+    # then the accumulator is returned unchanged.
     def foldl(@null_node, acc, _), do: acc
 
-    # Left convolution of the tree - if the tree is not empty, then first the foldl function traverses the left subtree (foldl(left,..))
-    # and applies the func function to the accumulator and the current node (func.(foldl(...),{...}), then it bypasses the right
-    # subtree (foldl(right,..)). The result is the final value after applying the function to all nodes.
+    @doc """
+    Left convolution of the tree -
+    if the tree is not empty,
+    then first the foldl function traverses the left subtree (foldl(left, ..))
+    and applies the func function to the accumulator
+    and the current node (func.(foldl(...), {...}),
+    then it bypasses the right
+    subtree (foldl(right, ..)).
+    The result is the final value after applying the function to all nodes.
+    """
     def foldl(%Node{key: key, value: value, left: left, right: right}, acc, func) do
       foldl(right, func.(foldl(left, acc, func), {key, value}), func)
     end
 
-    # Right convolution of the tree - if the input node is empty (the tree is empty), then the accumulator is returned unchanged.
+    # Right convolution of the tree -
+    # if the input node is empty (the tree is empty), then the accumulator is returned unchanged.
     def foldr(@null_node, acc, _), do: acc
 
-    # Right convolution of the tree - if the tree is not empty, then first the foldr function traverses the right subtree (foldl(right,..))
-    # and applies the func function to the accumulator and the current node (func.(foldr(...),{...}), then it bypasses the left
-    # subtree (foldr(left,..)). The result is the final value after applying the function to all nodes.
+    # Right convolution of the tree - if the tree is not empty,
+    # then first the foldr function traverses
+    # the right subtree (foldl(right,..))
+    # and applies the func function to the accumulator
+    # and the current node (func.(foldr(...),{...}), then it bypasses the left
+    # subtree (foldr(left,..)).
+    # The result is the final value after applying the function to all nodes.
     def foldr(%Node{key: key, value: value, left: left, right: right}, acc, func) do
       foldr(left, func.(foldr(right, acc, func), {key, value}), func)
     end
@@ -435,10 +454,15 @@ defmodule SecondLab do
       foldl(y, x, fn acc, {key, value} -> insert(acc, key, value) end)
     end
 
-    # Checking the equality of 2 AVL trees x and y - first, the number of nodes of each tree is calculated and compared.
-    # If the lengths of the trees are not equal, the function immediately returns false. If the lengths are equal, it passes through all nodes
-    # of the y tree and checks if each node with the same key and value is contained in the x tree. If all nodes match,
-    # the function returns true, otherwise it returns false.
+    @doc """
+    Checking the equality of 2 AVL trees x
+    and y - first, the number of nodes of each tree is calculated and compared.
+    If the lengths of the trees are not equal,
+    the function immediately returns false.
+    If the lengths are equal, it passes through all nodes
+    of the y tree and checks if each node with the same key and value is contained in the x tree. If all nodes match,
+    the function returns true, otherwise it returns false.
+    """
     def equal_tree(x, y) do
       lenx = foldl(x, 0, fn acc, _ -> acc + 1 end)
       leny = foldl(y, 0, fn acc, _ -> acc + 1 end)
